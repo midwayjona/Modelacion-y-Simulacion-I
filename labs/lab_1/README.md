@@ -1,8 +1,5 @@
 # Laboratorio 1 – The Birthday Paradox
 
-📂 **Notebook del laboratorio aquí:**  
-[**`lab_1.ipynb`**](./lab_1.ipynb)
-
 ---
 
 ## Descripción  
@@ -13,6 +10,9 @@ Para la simulación se asumen las siguientes condiciones:
 - Cada cumpleaños se representa con un número entero del `1` al `364`, donde `1` es el 1 de enero y `364` el 31 de diciembre.  
 - La probabilidad de nacer en cualquier día del año es uniforme.  
 - Se recomienda utilizar **listas o arreglos de NumPy** y funciones modulares para una mejor organización del código.
+
+## Notebook del laboratorio aquí
+[**`lab_1.ipynb`**](./lab_1.ipynb)
 
 ## Escenarios a Simular  
 La probabilidad debe calcularse para los siguientes casos:  
