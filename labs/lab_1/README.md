@@ -1,7 +1,12 @@
 # Laboratorio 1 – The Birthday Paradox
 
+📂 **Notebook del laboratorio aquí:**  
+[**`lab_1.ipynb`**](./lab_1.ipynb)
+
+---
+
 ## Descripción  
-En este laboratorio, exploramos la famosa **Paradoja del Cumpleaños (Birthday Paradox)** mediante simulaciones en Python. El objetivo es calcular la probabilidad de que, en un grupo de `N` personas, al menos `n` de ellas compartan el mismo día de cumpleaños.
+En este laboratorio, exploramos el famoso **Paradoja del Cumpleaños (Birthday Paradox)** mediante simulaciones en Python. El objetivo es calcular la probabilidad de que, en un grupo de `N` personas, al menos `n` de ellas compartan el mismo día de cumpleaños.
 
 Para la simulación se asumen las siguientes condiciones:  
 - El año tiene **364 días** (sin considerar años bisiestos).  
@@ -26,9 +31,6 @@ Un **notebook** que:
 1. Contenga la implementación de la simulación.  
 2. Calcule y muestre las probabilidades para todos los escenarios.  
 3. Presente los resultados de forma clara y comentada.
-
-Puedes acceder al notebook aquí:  
-➡️ [**`lab_1.ipynb`**](./lab_1.ipynb)
 
 ---
 Este laboratorio forma parte del curso **Modelación y Simulación I** de la **Maestría en Investigación de Operaciones** (Universidad Galileo, 2025).
