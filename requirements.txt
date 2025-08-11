@@ -4,5 +4,5 @@ pandas
 matplotlib
 scikit-learn
 scipy
-fitter
-setuptools
+fitter==1.7.1
+setuptools>=68
