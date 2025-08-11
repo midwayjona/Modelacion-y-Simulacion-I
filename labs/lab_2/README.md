@@ -64,4 +64,4 @@ Se busca encontrar la combinación óptima de presupuesto para maximizar las ven
 - `Lab_2.pdf` – Guía oficial del laboratorio.
 
 ---
-**Autor:** *[Tu nombre]* – Maestría en Investigación de Operaciones – Universidad Galileo
+**Autor:** *Jonathan Amado [14002285]* – Maestría en Investigación de Operaciones – Universidad Galileo
