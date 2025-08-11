@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import streamlit as st
+import pathlib
 from sklearn.linear_model import LinearRegression
 
 # BestFit (como en clase)
@@ -167,7 +168,8 @@ def vista_ej2():
     # Carga de datos
     st.write("Carga automática de `Advertising.csv` (debe estar junto a este archivo).")
     try:
-        df = pd.read_csv("Advertising.csv")
+        csv_path = pathlib.Path(__file__).parent / "Advertising.csv"
+        df = pd.read_csv(csv_path)
     except Exception as e:
         st.error(f"No se pudo leer Advertising.csv: {e}")
         return
