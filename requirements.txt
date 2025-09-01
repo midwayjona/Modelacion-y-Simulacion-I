@@ -4,5 +4,6 @@ pandas
 matplotlib
 scikit-learn
 scipy
+seaborn
 fitter==1.7.1
 setuptools>=68
