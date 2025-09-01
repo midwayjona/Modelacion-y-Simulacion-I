@@ -55,7 +55,7 @@ precio_venta = st.sidebar.number_input("Precio de venta", min_value=0.0, value=1
 precio_compra = st.sidebar.number_input("Precio de compra", min_value=0.0, value=1.0, step=0.1)
 precio_reciclaje = st.sidebar.number_input("Precio de reciclaje", min_value=0.0, value=0.2, step=0.1)
 
-ejecutar = st.sidebar.button("🚀 Iniciar simulación")
+ejecutar = st.sidebar.button("Iniciar simulación")
 
 if ejecutar:
     st.subheader("Resultados de la simulación")
