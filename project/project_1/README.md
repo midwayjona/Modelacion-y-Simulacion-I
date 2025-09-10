@@ -5,6 +5,9 @@ Universidad Galileo – FISICC
 
 ---
 
+**Ejecuta las simulaciones en línea:**  
+[**App de Streamlit – Proyecto 1**](https://perinola-simulation.streamlit.app)  
+
 ## Descripción  
 
 Este proyecto implementa una simulación del **juego de la perinola**, un juego de azar en el que cada tirada determina la acción de los jugadores sobre un pozo común de dinero.  

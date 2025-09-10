@@ -236,42 +236,77 @@ with tab1:
         st.dataframe(res.resumen_final)
 
 # -------------------------------
-# Tab 2: Experimentos
+# Tab 2: Experimentos (independientes)
 # -------------------------------
 with tab2:
     st.subheader("Experimentos (múltiples juegos)")
-    repeticiones = st.number_input("Número de juegos a simular", min_value=100, max_value=20000, value=1000, step=100)
-    run_exp = st.button("Ejecutar experimentos")
 
-    if run_exp:
-        cfg_base = ConfigJuego(n_jugadores=n_jugadores, capital_inicial=capital_inicial, max_jugadas=max_jugadas, seed=seed)
-        df_exp = experimentar(repeticiones, cfg_base)
+    # ---- Form 1: Estadísticas de múltiples juegos ----
+    with st.form("form_experimentos"):
+        repeticiones = st.number_input(
+            "Número de juegos a simular",
+            min_value=100, max_value=20000, value=1000, step=100,
+            key="rep_experimentos"
+        )
+        submitted_exp = st.form_submit_button("Ejecutar experimentos")
+
+    if submitted_exp:
+        cfg_base = ConfigJuego(
+            n_jugadores=n_jugadores,
+            capital_inicial=capital_inicial,
+            max_jugadas=max_jugadas,
+            seed=seed
+        )
+        df_exp = experimentar(int(repeticiones), cfg_base)
 
         col1, col2 = st.columns(2)
-        col1.metric("Prom. jugadas hasta 1ª eliminación", f"{df_exp['jugada_primera_eliminacion'].mean():.3f}")
-        col2.metric("Prom. jugadas hasta ganador", f"{df_exp['jugada_ganador'].mean():.3f}")
+        col1.metric("Prom. jugadas hasta 1ª eliminación",
+                    f"{df_exp['jugada_primera_eliminacion'].mean():.3f}")
+        col2.metric("Prom. jugadas hasta ganador",
+                    f"{df_exp['jugada_ganador'].mean():.3f}")
 
         st.markdown("**Resumen estadístico (jugadas):**")
-        st.dataframe(df_exp[["jugada_primera_eliminacion","jugada_ganador"]].describe())
+        st.dataframe(df_exp[["jugada_primera_eliminacion", "jugada_ganador"]].describe())
 
-        # Estudio vs número de jugadores (idéntico a notebook)
-        st.markdown("---")
-        st.markdown("### Efecto del número de jugadores (promedio y P95 de jugadas hasta ganador)")
-        n_min = st.number_input("N jugadores (mín)", min_value=2, max_value=20, value=3, step=1)
-        n_max = st.number_input("N jugadores (máx)", min_value=n_min, max_value=30, value=10, step=1)
-        rep_vs_n = st.number_input("Repeticiones por cada N", min_value=100, max_value=5000, value=400, step=100)
-        if st.button("Ejecutar estudio vs N"):
-            lista_n = list(range(int(n_min), int(n_max)+1))
-            df_n = estudio_vs_njugadores(lista_n=lista_n, repeticiones=int(rep_vs_n),
-                                         capital_inicial=capital_inicial, seed=seed)
-            st.dataframe(df_n)
+    st.markdown("---")
+    st.markdown("### Efecto del número de jugadores (promedio y P95 de jugadas hasta ganador)")
 
-            figN, axN = plt.subplots(figsize=(7.5, 4))
-            axN.plot(df_n["n_jugadores"], df_n["jugadas_promedio_hasta_ganador"], marker="o", linewidth=2, label="Promedio")
-            axN.plot(df_n["n_jugadores"], df_n["jugadas_p95_hasta_ganador"], marker="^", linewidth=1.8, label="P95")
-            axN.set_title("Jugadas hasta encontrar un ganador vs. número de jugadores")
-            axN.set_xlabel("Número de jugadores")
-            axN.set_ylabel("Jugadas hasta ganador")
-            axN.grid(alpha=0.3)
-            axN.legend()
-            st.pyplot(figN)
+    # ---- Form 2: Estudio vs N (independiente del anterior) ----
+    with st.form("form_vs_n"):
+        n_min = st.number_input(
+            "N jugadores (mín)",
+            min_value=2, max_value=20, value=3, step=1, key="n_min"
+        )
+        n_max = st.number_input(
+            "N jugadores (máx)",
+            min_value=int(n_min), max_value=30, value=10, step=1, key="n_max"
+        )
+        rep_vs_n = st.number_input(
+            "Repeticiones por cada N",
+            min_value=100, max_value=5000, value=400, step=100, key="rep_vs_n"
+        )
+        submitted_vs_n = st.form_submit_button("Ejecutar estudio vs N")
+
+    if submitted_vs_n:
+        lista_n = list(range(int(n_min), int(n_max) + 1))
+        df_n = estudio_vs_njugadores(
+            lista_n=lista_n,
+            repeticiones=int(rep_vs_n),
+            capital_inicial=capital_inicial,
+            seed=seed
+        )
+        st.dataframe(df_n)
+
+        figN, axN = plt.subplots(figsize=(7.5, 4))
+        axN.plot(df_n["n_jugadores"],
+                 df_n["jugadas_promedio_hasta_ganador"],
+                 marker="o", linewidth=2, label="Promedio")
+        axN.plot(df_n["n_jugadores"],
+                 df_n["jugadas_p95_hasta_ganador"],
+                 marker="^", linewidth=1.8, label="P95")
+        axN.set_title("Jugadas hasta encontrar un ganador vs. número de jugadores")
+        axN.set_xlabel("Número de jugadores")
+        axN.set_ylabel("Jugadas hasta ganador")
+        axN.grid(alpha=0.3)
+        axN.legend()
+        st.pyplot(figN)
