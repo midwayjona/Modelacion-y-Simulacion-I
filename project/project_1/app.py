@@ -310,3 +310,4 @@ with tab2:
         axN.grid(alpha=0.3)
         axN.legend()
         st.pyplot(figN)
+    
