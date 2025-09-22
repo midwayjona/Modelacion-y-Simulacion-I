@@ -8,9 +8,7 @@ Se incluyen **tres metaheurísticas**: **Algoritmo Genético (GA)**, **Recocido 
 
 ## Demo en línea
 - **App en Streamlit:** https://proyecto-de-cosecha.streamlit.app
-
-## Demo en línea
-- **Notebook:** `harvest_metaheuristics.ipynb`](./notebooks/harvest_metaheuristics.ipynb)
+- **Notebook:** [`harvest_metaheuristics.ipynb`](./notebooks/harvest_metaheuristics.ipynb)
 
 ---
 
