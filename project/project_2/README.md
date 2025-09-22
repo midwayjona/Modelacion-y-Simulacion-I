@@ -1,72 +1,104 @@
-# Proyecto 1 – Simulación del Juego de la Perinola  
+# Programa de Cosecha (Knapsack Binario con Doble Restricción)
 
-Curso: **Modelación y Simulación I – Maestría en Investigación de Operaciones**  
-Universidad Galileo – FISICC  
+Este proyecto implementa un **Programa de Cosecha** de caña de azúcar modelado como un **knapsack binario** con **dos restricciones**: horas totales de trabajo y capacidad total de transporte. El objetivo es **maximizar los kilogramos recolectados**. Para visualizar la convergencia de las metaheurísticas como una curva que **disminuye**, optimizamos un **costo penalizado** (minimización) que incluye penalizaciones por violaciones de horas o capacidad.
 
----
-
-**Ejecuta las simulaciones en línea:**  
-[**App de Streamlit – Proyecto 1**](https://perinola-simulation.streamlit.app)  
-
-## Descripción  
-
-Este proyecto implementa una simulación del **juego de la perinola**, un juego de azar en el que cada tirada determina la acción de los jugadores sobre un pozo común de dinero.  
-
-### Resultados de la perinola:  
-- **Pon 1**  
-- **Pon 2**  
-- **Toma 1**  
-- **Toma 2**  
-- **Toma todo**  
-- **Todos ponen**  
-
-### Reglas básicas:  
-- Cada jugador inicia con la misma cantidad de dinero.  
-- Existe un **pozo común** donde se realizan aportes y del cual se pueden tomar ganancias.  
-- El juego termina cuando solo queda un jugador con dinero.  
+Se incluyen **tres metaheurísticas**: **Algoritmo Genético (GA)**, **Recocido Simulado (SA)** y **Búsqueda Tabú (TS)**. El flujo de trabajo se muestra tanto en una **notebook de Python** como en una **aplicación Streamlit**.
 
 ---
 
-## Simulación  
+## Modelo (resumen)
+- Conjunto de parcelas \( i=1..N \).
+- Variables: \( V_i \) (kg), \( P_i \) (horas), \( X_i \in \{0,1\} \).
+- Parámetros: \( W = \text{workers} \times 40 \), \( K \) vehículos, \( C \) kg por vehículo.
+- Objetivo: \( \max Z = \sum_i V_i X_i \).
+- Restricciones: \( \sum_i P_i X_i \le W \) y \( \sum_i V_i X_i \le K C \).
+- Costo penalizado a minimizar:  
+  \( \text{cost}(X) = -Z(X) + \lambda_h \max(0, \sum P_i X_i - W) + \lambda_c \max(0, \sum V_i X_i - KC) \).
 
-La simulación considera:  
-- **N jugadores**.  
-- **M juegos** (número de repeticiones).  
-- Registro de las **ganancias y pérdidas por jugador** en cada simulación.  
-
----
-
-## Preguntas a responder  
-
-Con los resultados de la simulación se busca responder:  
-
-1. ¿Cuántos juegos son necesarios para que un jugador se quede sin dinero?  
-2. ¿En cuántos juegos, en promedio, hay un ganador definido?  
-3. ¿Cómo afecta el número de jugadores al número de juegos para que un jugador se gane todo el dinero?  
-4. ¿Cuál es la gráfica de ganancias y pérdidas por jugador al término de la simulación?  
+> Nota: se mantiene la formulación binaria global (capacidad total \(K C\)). Extensiones a **multiple knapsack** o **múltiples viajes** se comentan en el código pero **no** se implementan.
 
 ---
 
-## Entregables  
+## Instalación y ejecución
 
-1. **Notebook:** [`perinola.ipynb`](./perinola.ipynb)  
-   - Implementa la simulación del juego con parámetros configurables.  
-   - Incluye gráficas de ganancias/pérdidas y análisis de los resultados.  
+### 1) Crear y activar entorno
+```bash
+python -m venv .venv
+# Linux/Mac
+source .venv/bin/activate
+# Windows (PowerShell)
+.venv\Scripts\Activate.ps1
+```
 
-2. **Aplicación de Streamlit:** [`app.py`](./app.py)  
-   - Interfaz interactiva que permite configurar:  
-     - Número de jugadores.  
-     - Número de juegos (iteraciones).  
-     - Monto inicial de cada jugador.  
-   - Al ejecutar, la aplicación muestra:  
-     - Evolución de la simulación.  
-     - Gráficas por jugador de ganancia y pérdida.  
-     - Estadísticas clave para responder las preguntas planteadas.  
+### 2) Instalar dependencias
+```bash
+pip install -r requirements.txt
+```
+
+### 3) Ejecutar la Notebook
+Abra `notebooks/harvest_metaheuristics.ipynb` y ejecute todas las celdas.
+
+### 4) Ejecutar la App
+```bash
+streamlit run app/streamlit_app.py
+```
 
 ---
 
-## Ejecución de la aplicación  
+## Parámetros y datos
+- \( N \): número de parcelas.
+- \( V_i \): kilogramos por parcela, enteros en \([100,1200]\).
+- \( P_i \): horas por parcela, reales en \([1.0,10.0]\) redondeadas a 2 decimales.
+- \( W = \text{workers} \times 40.0 \).
+- \( K \), \( C \): vehículos y capacidad por vehículo. Capacidad total: \(K \times C\).
 
-1. Instalar dependencias:
-   ```bash
-   pip install streamlit numpy pandas matplotlib seaborn
+La generación de datos es **determinista** y **reproducible** vía `seed`.
+
+---
+
+## Uso (app)
+1. Ajuste `seed`, `N`, `workers`, `K`, `C` en la barra lateral.
+2. Elija algoritmo (**GA**, **SA**, **TS**) y configure sus hiperparámetros.
+3. Pulse **Resolver**.
+4. Interprete el gráfico: el **costo penalizado** debe **disminuir** con las iteraciones.
+5. Descargue el CSV con la solución (parcelas seleccionadas).
+
+---
+
+## Reproducibilidad
+El generador usa `numpy.random.default_rng(seed)`. Con la misma `seed` y parámetros, obtendrá los mismos datos y resultados estocásticos (dentro de la variabilidad debida a los algoritmos).
+
+---
+
+## Notas y limitaciones
+- Se modela la capacidad total como \( K \times C \) (vehículos idénticos, carga distribuible).  
+- Extensiones a **asignación por vehículo** (multiple knapsack) o **múltiples viajes** no están implementadas.
+- Gráficos con **matplotlib** (sin seaborn).
+
+---
+
+## Estructura del repositorio
+```
+project-root/
+├─ notebooks/
+│  └─ harvest_metaheuristics.ipynb
+├─ app/
+│  └─ streamlit_app.py
+├─ core/
+│  ├─ model.py
+│  ├─ ga.py
+│  ├─ sa.py
+│  ├─ tabu.py
+│  └─ utils.py
+├─ artifacts/
+│  └─ .gitkeep
+├─ tests/
+│  └─ test_model.py
+├─ README.md
+└─ requirements.txt
+```
+
+---
+
+## Créditos
+Desarrollado como ejercicio académico de metaheurísticas aplicadas a planeación de cosecha.
