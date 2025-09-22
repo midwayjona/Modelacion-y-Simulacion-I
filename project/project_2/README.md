@@ -44,8 +44,6 @@ $$
 \text{cost}(X) \;=\; -Z(X)\;+\;\lambda_h\,\max\!\Big(0,\ \textstyle\sum_i P_i X_i - W\Big)\;+\;\lambda_c\,\max\!\Big(0,\ \textstyle\sum_i V_i X_i - K C\Big).
 $$
 
-> Nota: se mantiene la formulación binaria global (capacidad total \(K\,C\)). Extensiones a **multiple knapsack** o **múltiples viajes** se comentan en el código pero **no** se implementan.
-
 ---
 
 ## Instalación y ejecución
